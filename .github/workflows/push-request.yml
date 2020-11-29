@@ -34,6 +34,6 @@ jobs:
         aws s3 sync ./lambda_artifact s3://${{ secrets.CODEDEPLOY_BUCKETNAME }}
     - name: Update lambda
       run: |
-        aws lambda update-function-code --function-name Email_Service --s3-bucket ${CODEDEPLOY_BUCKETNAME} --s3-key serverless_artifact.zip --region us-east-1 > lambdaFile.txt
+        aws lambda update-function-code --function-name Email_Service --s3-bucket ${{ secrets.CODEDEPLOY_BUCKETNAME }} --s3-key serverless_artifact.zip --region us-east-1 > lambdaFile.txt
 
       
