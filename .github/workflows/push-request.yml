@@ -32,7 +32,7 @@ jobs:
       run: |
         pwd
         ls
-        aws s3 sync ./lambdaFunction s3://${{ secrets.CODEDEPLOY_BUCKETNAME }}
+        aws s3 cp ambdaFunction.zip s3://${{ secrets.CODEDEPLOY_BUCKETNAME }}/lambdaFunction.zip
     - name: Update lambda
       run: |
         aws lambda update-function-code --function-name Email_Service --s3-bucket ${{ secrets.CODEDEPLOY_BUCKETNAME }} --s3-key lambdaFunction.zip --region us-east-1 > lambdaFile.txt
