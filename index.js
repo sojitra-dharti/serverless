@@ -18,5 +18,5 @@ exports.handler = (event, context, callback) => {
     },
     Source: "noreply@prod.dhartisojitra.me",
   };
-  return ses.sendEmail(params).promise()
+  return ses.sendEmail(params).promise();
 };
