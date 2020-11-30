@@ -1,10 +1,22 @@
-'use strict'
-const AWS = require('aws-sdk');
+const aws = require("aws-sdk");
+
+const ses = new aws.SES();
+aws.config.update({ region: "us-east-1" });
 
 
-const ses = new AWS.SES();
-const documentClient = new AWS.DynamoDB.DocumentClient({region: REGION});
-
-exports.handler = (event, context, callback)=>{
-    console.log("Hello World");
+exports.handler = (event, context, callback) => {
+  let message = JSON.parse(event.Records[0].Sns.Message);
+  var params = {
+    Destination: {
+      ToAddresses: [message.email],
+    },
+    Message: {
+      Body: {
+        Text: { Data: "Click here  " + HOST },
+      },
+      Subject: { Data: "Answer Posted for your question"},
+    },
+    Source: "noreply@prod.dhartisojitra.me",
+  };
+  return ses.sendEmail(params).promise()
 };
