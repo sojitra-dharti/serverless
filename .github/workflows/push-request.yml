@@ -15,17 +15,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: | 
-        npm install
-        ls
-        cd node_modules
-        ls
-        cd ..
     - run: npm run build --if-present
     - name: Zip lambda Artifacts
       run: | 
-        zip -r lambdaFunction.zip test.js package.json package-lock.json node_modules
+        zip -r lambdaFunction.zip index.js package.json package-lock.json node_modules
         touch 777 lambdaFile.txt
+        pwd
+        ls
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -34,6 +30,8 @@ jobs:
         aws-region: us-east-1
     - name: Push artifacts to s3
       run: |
+        pwd
+        ls
         aws s3 sync ./lambdaFunction s3://${{ secrets.CODEDEPLOY_BUCKETNAME }}
     - name: Update lambda
       run: |
