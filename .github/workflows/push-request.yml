@@ -18,7 +18,7 @@ jobs:
     - run: npm run build --if-present
     - name: Zip lambda Artifacts
       run: | 
-        zip -r lambdaFunction.zip index.js package.json package-lock.json node_modules
+        zip -r lambdaFunction.zip index.js
         touch 777 lambdaFile.txt
         pwd
         ls

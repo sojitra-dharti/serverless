@@ -12,7 +12,7 @@ exports.handler = (event, context, callback) => {
     },
     Message: {
       Body: {
-        Text: { Data: "Click here  " + HOST },
+        Text: { Data: "Click here : Link"  },
       },
       Subject: { Data: "Answer Posted for your question"},
     },
