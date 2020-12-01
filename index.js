@@ -44,7 +44,7 @@ let message = JSON.parse(event.Records[0].Sns.Message);
                   },
                   Subject: { Data: message.Action},
                 },
-                Source: "donotreply-webapp@" + message.DOMAIN,
+                Source: "donotreply-webapp@" + message.Domain,
               };
               return ses.sendEmail(params).promise();
           }
