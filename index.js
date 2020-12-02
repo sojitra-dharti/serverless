@@ -5,54 +5,46 @@ aws.config.update({ region: "us-east-1" });
 
 
 exports.handler = (event, context, callback) => {
-  
-let message = JSON.parse(event.Records[0].Sns.Message);
- 
+  var message = JSON.parse(event.Records[0].Sns.Message);
+  var uniqueKey = message.Email + message.QuesId + message.AnsId + message.Action + message.Answer;
+
   var searchParams = {
     TableName: "csye6225",
     Key: {
-      email_id:message.Email+message.QuesId+message.AnsId+message.Action+message.Answer
+      email_id: uniqueKey
     }
   };
-    var dynamoparams = {
-          Item: {
-            email_id: message.Email+message.QuesId+message.AnsId+message.Action+message.Answer
-          },
-          TableName: "csye6225"
-        };
+  var dynamoparams = {
+    Item: {
+      email_id: uniqueKey
+    },
+    TableName: "csye6225"
+  };
 
-  dynamo.get(searchParams, function(error, result) {
-        if (error) {
-          
-     
+  dynamo.get(searchParams, function (error, result) {
+    if (error) {
     } else {
- 
-   
-      if (result.Item == null || result.Item == undefined) {
-        dynamo.put(dynamoparams, function(error, data) {
+      if (!result.Item) {
+        dynamo.put(dynamoparams, function (error, data) {
           if (error) {
-          
-          } 
-          else{
-             var params = {
-                Destination: {
-                  ToAddresses: [message.Email],
-                },
-                Message: {
-                  Body: {
-                    Text: { Data: "Click here  " + message.URL},
-                  },
-                  Subject: { Data: message.Action},
-                },
-                Source: "donotreply-webapp@" + message.Domain,
-              };
-              return ses.sendEmail(params).promise();
           }
-          
+          else {
+            var params = {
+              Destination: {
+                ToAddresses: [message.Email],
+              },
+              Message: {
+                Body: {
+                  Text: { Data: message.URL },
+                },
+                Subject: { Data: message.Action },
+              },
+              Source: message.Domain,
+            };
+            return ses.sendEmail(params).promise();
+          }
         });
-        
-      } 
-     
+      }
     }
   });
 };
