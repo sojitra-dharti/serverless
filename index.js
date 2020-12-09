@@ -35,9 +35,9 @@ exports.handler = (event, context, callback) => {
               },
               Message: {
                 Body: {
-                  Text: { Data: message.URL },
+                  Text: { Data: "Question URL" + message.QuesURL + "\n" + "Answer URL" + message.AnswerURL  },
                 },
-                Subject: { Data: message.Action },
+                Subject: { Data: message.Action + "for Question Id : " + message.QuesId },
               },
               Source: message.Domain,
             };
